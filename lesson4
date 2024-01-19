@@ -1,0 +1,61 @@
+Örnek Çok zarla atış probleminin Excel VBA-Macro ile çözümü
+Private Sub CommandButton1_Click()
+Dim n As Double 'rastgele sayi adedi
+Dim m As Integer 'rastgele Z adet zar atisinda rastlanan secilen en küçük sayi m=Z
+Dim s As Double 'T=m, T=m+1, .. olan farkli deney sayilar?
+Dim T As Integer 'rastgele Z zar atisinda toplam sayi degeri
+Dim p As Double 'her ayri deneyde p=s/n ihtimali
+Dim i As Integer 'satir no.su
+n = ThisWorkbook.Sheets("Sayfa1").Cells(2, 1).Value
+Z = ThisWorkbook.Sheets("Sayfa1").Cells(2, 2).Value
+m = Z 'Z adet zar atýlýnca min.sayi toplami m=1*Z , max.sayi toplami 6*Z olur.
+s = 0
+T = 0
+i = 4
+For j = m To 6 * Z
+ For k = 1 To n
+ Randomize
+ For u = 1 To Z
+ T = Int(Rnd * 6) + 1 + T
+ Next
+ If T = j Then s = s + 1 Else: s = s
+ T = 0
+ Next
+ i = i + 1 '5.satirda yazmaya baslar
+ ThisWorkbook.Sheets("Sayfa1").Cells(i, 1).Value = s
+ ThisWorkbook.Sheets("Sayfa1").Cells(i, 2).Value = j
+ p = s / n
+ ThisWorkbook.Sheets("Sayfa1").Cells(i, 3).Value = p
+ s = 0
+Next
+End Sub
+
+Örnek Octave/Matlab’de 0 ile 1 arasında rastgele 100 sayının hazırlanması: rand
+işlevi
+N=100; %rastgele 100 sayının hazırlanması
+for k=1:N
+p(k)=rand;
+end
+plot(p),grid on
+
+>> rastgele1
+
+Örnek Octave/Matlab’de rastgele 100 sayının çubuk diyagramı
+N=100; %rastgele 100 sayının hazırlanması
+for k=1:N
+p(k)=rand;
+end
+bar(p)
+axis ([0 100 0 1]);grid on
+>> rastgele2
+
+
+Octave/Matlab’de rastgele sayılar 0-1 aralığındadır. Bunları istenen bir aralığa getirmek
+için rand ifadesini bir (b-a) sayısıyla çarpıp bir a sayısı ile toplayabiliriz. Ayrıca sayıları
+yuvarlatmamız da gerekebilir. Burada Octave/Matlab’in fonksiyonlarını kullanacağız.
+ floor (A): A’nın elemanlarını A’ya eşit veya A’dan küçük en yakın tam sayılara
+dönüştürür. (Tabana indirger) Örnek: floor(45.999); ans=45
+ ceil (A): A’nın elemanlarını A’ya eşit veya A’dan büyük en yakın tam sayılara
+dönüştürür. (Tavana indirger) Örnek: ceil(45.001); ans=46
+ round (A): A’in elemanlarını en yakın tam sayılara dönüştürür. (Taban veya
+tavana indirger) Örnek round(45.499); ans=45. Örnek round(45.500); ans=46.
