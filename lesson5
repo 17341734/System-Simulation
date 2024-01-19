@@ -1,0 +1,13 @@
+Örnek Belirli zaman aralığında rastgele gelen parçaların geliş süreleri
+s= round (rand*(b-a)) + a
+
+%4-8 arasında rastgele 10 tam sayının hazırlanması
+b=8;a=4;N=10;
+for k=1:N
+s(k)= round(rand*(b-a)) + a;
+end
+bar(s)
+axis ([0.5 10.5 0 8]);grid on
+
+>> rastgele3
+
