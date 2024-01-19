@@ -1,0 +1,16 @@
+#Excel’de karakteristik büyüklükler için kullanılan
+#fonksiyonlar şunlardır:
+= ORTALAMA (H14:H1014) Aritmetik ortalama
+= STDSAPMA.S (H14:H1014) Örneklem Stand..sapması =Sigma
+= ENÇOK_OLAN.TEK (TAMSAYI (H14:H1014)) Mod = En çok (frekansı) olan
+= ORTANCA (H14:H114) Medyan = Ortanca
+=ÇARPIKLIK (H14:H1014) Çarpıklık
+=BASIKLIK (H14:H1014) Basıklık
+
+
+# Aşağıdaki fonksiyon belirtilen ortalama ve standart sapma için normal kümülatif dağılımın
+#tersini vermektedir. (N=1000 ortalama=80 sigma=6)
+= NORM.TERS(rastgele sayı; mu; sigma)
+= NORM.TERS(S_SAYI ÜRET (); mu; sigma)
+= NORM.TERS(S_SAYI_ÜRET (); 80; 6)
+
