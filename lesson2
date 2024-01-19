@@ -1,0 +1,76 @@
+% Binom Dağılımı için olasılık kütle fonksiyonu
+function y=BRD(x,n,p)
+y = zeros(1,length(x));
+for i=1:length(x)
+ if mod(x(i),1) == 0
+ y(i) = (factorial(n)./(factorial(x(i)).*factorial(nx(i)))).*((p.^x(i))*(1-p).^(n-x(i)));
+ else
+ y(i)=0;
+ end
+end
+end
+
+
+%% n = 10, p = 0.9 ve 0.5 iken Binom Dağılımı histogrami
+x=1:1:10;
+n = 10;
+p =0.9;
+y=BRD(x, n, p);
+figure
+subplot(1,2,1);
+bar(x, y,'b', 'LineWidth',2);
+axis([-1 11 0 .5]);
+set(gca,'Layer','top')
+ylabel('p(x)','Position',[-1.5 .52 1.0001],'Rotation',0,'FontSize', 16)
+xlabel('x', 'Position',[11.5 0 1.0001], 'FontSize', 16)
+p =0.5;
+y=BRD(x, n, p);
+subplot(1,2,2);
+bar(x,y,'b', 'LineWidth',2);
+axis([-1 11 0 .5]);
+xlabel('x', 'Position',[11.5 0 1.0001], 'FontSize', 16)
+ylabel('p(x)','Position',[-1.5 .52 1.001],'Rotation',0,'FontSize', 16)
+
+
+%% Gama fonksiyonu
+function y=gama(alpha)
+fun = @(x) exp(-x).*(x).^(alpha-1);
+y=integral(fun,0,Inf);
+end
+
+
+% Gama Dağılımı için olasılık yoğunluk fonksiyonu
+function y=GRD(x,lamda,alpha)
+y = zeros(1,length(x));
+for i=1:length(x)
+ if x(i)>= 0
+ y(i) = (lamda.*exp(-lamda.*x(i))
+.*(lamda*x(i)).^(alpha-1))/gama(alpha);
+ else
+ y(i)=0;
+ end
+end
+end
+
+
+%% lamda=0.8 iken farklı alpha değerleri için Gama dağılım oyf eğrileri
+x=0:.1:15;
+lamda = .8;
+alpha =[0.5 1 2 3 4];
+a=zeros(length(alpha),length(x));
+for i=1:5
+a(i,:)= GRD(x, lamda, alpha(i));
+end
+figure
+subplot(1,2,1);
+plot(x,a(1,:),x,a(2,:),x,a(3,:),x,a(4,:),x,a(5,:), 'LineWidth',2);
+axis([0 15 0 .65]);
+set(gca,'FontSize',16)
+x=5:.1:55;
+lamda = .8;
+alpha =20;
+a= GRD(x, lamda, alpha);
+subplot(1,2,2);
+plot(x, a,'b', 'LineWidth',2);
+set(gca,'FontSize',16)
+
