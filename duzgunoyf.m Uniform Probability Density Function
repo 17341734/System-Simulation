@@ -1,0 +1,193 @@
+% Düzgün olasılık yoğunluk fonksiyonu
+# Alt eşiği 10 üst eşiği 20 olan bir düzgün olasılık yoğunluk fonksiyonunu (oyf) Matlab ile
+# kodlayalım ve diyagramını çizelim. 
+ÖRNEK Matlab’da düzgün oyf için hazırlayacağımız mdosyasına “duzgunoyf” ismini verelim.
+
+function [y]=duzgunoyf(x,a,b)
+ y=zeros(size(x)); % size(x): x vektörünün boyutu: m satır, n sütun
+ for i=1:length(x) % length(x): x vektörünün eleman sayısı
+ y(i)=(1/(b-a)).*(a<=x(i)).*(x(i)<=b); % a-b aralığı değerleri
+ end
+end
+
+# Şimdi yukarıda yapılan tanıma göre x değeri 10 ile 20 arasında oyf =1/(b - a) değerinde
+# olacaktır, bunun dışında da 0 değerini alacaktır. x değerini 5 ile 25 arasında 0,01 adımlarıyla
+# artıracağız. 
+ÖRNEK Grafik çizimi için “duzgun01” isimli bir m-dosyası hazırlayalım.
+% 10 ve 20 değerleri arasında düzgün olasılık yoğunluk fonksiyonu
+
+x1=5:0.01:25;
+yf=duzgunoyf(x1, 10,20);
+plot(x1,yf,'k', 'LineWidth',2);
+axis([5 25 0 .15]);
+set(gca,'Layer','top')
+ylabel('f(x)','Position',[3.5 .135 1.0001],'Rotation',0,'FontSize', 20)
+xlabel('x', 'Position',[25.5 0 1.0001], 'FontSize', 20)
+set(gca,'XTickLabel',{'', 'a', '', 'b'},'FontSize', 20)
+set(gca,'YTickLabel',{'0','0.05', '1/(b-a)', '', ''},'FontSize', 20)
+
+ÖRNEK unifpdf(x,a,b) işlevinin kullanımı
+# Önceki örnekte hazırlanan “duzgunoyf.m” dosyası yerine, Matlab kütüphanesinde
+# bulunan ve aynı arka plana sahip olan “unifpdf(x,a,b)” işlevi kullanılabilir. Dolayısıyla
+# aşağıdaki “uniform01” isimli m-dosyasında unifpdf(x,a,b) çalıştırmamız yeterlidir.
+
+% 10 ve 20 değerleri arasında düzgün olasılık yoğunluk fonksiyonu
+x1=5:0.01:25;
+yf=unifpdf(x1,10,20);
+plot(x1,yf,'k', 'LineWidth',2);
+axis([5 25 0 .15]);
+set(gca,'Layer','top')
+ylabel('f(x)','Position',[3.5 .135 1.0001],'Rotation',0,'FontSize', 20)
+xlabel('x', 'Position',[25.5 0 1.0001], 'FontSize', 20)
+set(gca,'XTickLabel',{'', 'a', '', 'b'},'FontSize', 20)
+set(gca,'YTickLabel',{'0','0.05', '1/(b-a)', '', ''},'FontSize', 20)
+
+ÖRNEK unifcdf(x,a,b) işlevinin kullanımı
+# Önceki iki örnekte hazırlanan düzgün olasılık yoğunluk fonksiyonunun integrali olarak birikimli dağılım fonksiyonunu veren Matlab’deki hazır işlev “unifcdf(x,a,b)”dir. 
+# Aşağıda “uniformbdf01” isimli bir m-dosyası hazırlanmıştır.
+# % 10 ve 20 değerleri arasında düzgün birikimli dağılım fonksiyonu
+
+x1=5:0.01:25;
+yf=unifcdf(x1,10,20);
+plot(x1,yf,'k', 'LineWidth',2);
+axis([5 25 0 1.5]);
+set(gca,'Layer','top')
+ylabel('F(X)','Position',[3. 1.3 1.0001],'Rotation',0,'FontSize', 20)
+xlabel('x', 'Position',[25.5 0 1.0001], 'FontSize', 20)
+set(gca,'XTickLabel',{'', 'a', '', 'b'},'FontSize', 20)
+set(gca,'YTickLabel',{'0','0.5', '1', '', ''},'FontSize', 20)
+grid on
+
+ÖRNEK “normpdf (x, mu, sigma)” işleviyle normal dağılımın
+# olasılık yoğunluk fonksiyonu
+% Normal Dağılım olasılık yoğunluk fonksiyonu-oyf (pdf)
+
+mu=6;sigma=1.7;
+subplot(2,1,1)
+x = 0:0.1:12;
+Y = normpdf (x, mu, sigma);
+plot(x,Y,'k')
+subplot(2,1,2)
+x = 0:1:12;
+Y = normpdf (x, mu, sigma);
+bar(x,Y,'k')
+
+ÖRNEK “normcdf (x, mu, sigma)” işleviyle normal dağılımın birikimli dağılım fonksiyonu
+% Normal Dağılım birikimli dağılım fonksiyonu-BDF
+
+mu=6;sigma=1.7;
+subplot(1,2,1)
+x = 0:0.1:12;
+Y = normcdf (x, mu, sigma);
+plot(x,Y,'b')
+grid on
+subplot(1,2,2)
+x = 0:1:12;
+Y = normcdf (x, mu, sigma);
+bar(x,Y,'b')
+grid on
+
+ÖRNEK z = 0,57 ile z = 0 arasında kalan alanı (ihtimali) bulalım
+# Excel'de
+=NORM.S.DAĞ(0,57;DOĞRU)-
+NORM.S.DAĞ(0;DOĞRU)
+kullanılırsa:
+P(0 ≤ z ≤ 0,57) = 0,215661
+# Matlab'de
+>> F(x)=normcdf ([0.001 0.57]);
+>> F(2)-F(1)
+ans = 0.2153
+
+ÖRNEK z = -0,57 ile z = 0,62 arasında kalan alanı (ihtimali) bulalım.
+# 2.yol: Excel'de
+=NORM.S.DAĞ(0,62;DOĞRU)-NORM.S.DAĞ(-0,57;DOĞRU)
+kullanılırsa:
+P(-0,57 ≤ z ≤ 0,62) =0,448032
+
+ÖRNEK z = -0,62 ile z = -0,57 arasında kalan alanı (ihtimali) bulalım. 
+Excel'de
+=NORM.S.DAĞ(-0,57;DOĞRU)-NORM.S.DAĞ(-0,62;DOĞRU)
+kullanılırsa:
+P(-0,62 ≤ z ≤ -0,57) =0,01671
+
+ÖRNEK P(z ≤ -0,57), yani z = - ile z = -0,57 arasındaki alanı (ihtimali) bulalım. 
+# Excel'de
+=NORM.S.DAĞ(-0,57;DOĞRU) 
+P(  ≤ z ≤ -0,57) = 0,284339
+
+Örnek Üstel Dağılım Olasılık Yoğunluk Fonksiyonu (oyf) ve Birikimli Dağılım
+# Fonksiyonu (BDF)
+# Üstel dağılıma uygun bir X değişkeni için 𝜆 = 0,5 =1/𝜇 olarak verilmiştir. Önce bu
+# değişken için olasılık yoğunluk fonksiyonunu-oyf ve birikimli dağılım fonksiyonu-BDF
+# aşağıdaki “usteloyfbdf” isimli m-dosyası ile hazırlayalım.
+% Ustel dağılım olasılık yoğunluk fonksiyonu
+% ve birikimli dağılım fonksiyonu
+function [y,z]=usteloyf(x,lambda)
+y = zeros(1,length(x));
+z = zeros(1,length(x));
+for i=1:length(x)
+ if x(i)>= 0
+ y(i) = lambda.*exp(-lambda.*x(i));
+ z(i) = 1 - exp(-lambda.*x(i));
+ else
+ y(i)=0;
+ end
+end
+end
+
+DEVAMI Sonra bu “usteloyfbdf” isimli alt programı kullanarak aşağıdaki “usteloyfbdf01” isimli
+sayısal değerlerin uygulandığı m-dosya yardımıyla oyf ve BDF şekillerini çizebiliriz.
+% -1 ve 20 değerleri arasında üstel dağılım oyf ve BDF eğrileri
+
+x1=-1:0.1:20;
+lamda = 0.5;
+[y,z]=usteloyfbdf(x1, lamda);
+subplot(1,2,1);
+plot(x1,y,'b', 'LineWidth',2);
+axis([-1 20 0 1.05]);
+set(gca,'Layer','top')
+ylabel('f(x)','Position',[-2.8 1.02 1.0001],'Rotation',0,'FontSize', 16)
+xlabel('x', 'Position',[21.5 0 1.0001], 'FontSize', 16)
+grid on
+subplot(1,2,2);
+plot(x1,z,'b', 'LineWidth',2);
+axis([-1 20 0 1.05]);
+xlabel('x', 'Position',[21.5 0 1.0001], 'FontSize', 16)
+ylabel('F(x)','Position',[-2.8 1.02 1.0001],'Rotation',0,'FontSize', 16)
+grid on
+
+ÖRNEK exppdf(x,mu)
+# ve expcdf(x,mu) işlevlerinin kullanımı
+# Önceki örnekte hazırlanan “usteloyf.m” dosyası yerine, Matlab kütüphanesinde bulunan
+# ve benzer aynı arka plana sahip olan exppdf(x,mu) ve expcdf(x,mu) işlevleri
+# kullanılabilir. Burada 𝜇 = 1⁄𝜆 = 2 alınacaktır. Böylece aşağıdaki “expoyfbdf01” isimli
+# m-dosyası hazırlanmıştır.
+
+% -1 ve 20 değerleri arasında üstel dağılım oyf ve BDF eğrileri
+x1=-0:0.1:20;
+lamda = 0.5;mu=1/lamda
+y=exppdf(x1, mu);
+z=expcdf(x1,mu);subplot(1,2,1);
+plot(x1,y,'b', 'LineWidth',2);
+axis([-1 20 0 1.05]);
+set(gca,'Layer','top')
+ylabel('f(x)','Position',[-2.8 1.02 1.0001],'Rotation',0,'FontSize', 16)
+xlabel('x', 'Position',[21.5 0 1.0001], 'FontSize', 16)
+grid on
+subplot(1,2,2);
+plot(x1,z,'b', 'LineWidth',2);
+axis([-1 20 0 1.05]);
+xlabel('x', 'Position',[21.5 0 1.0001], 'FontSize', 16)
+ylabel('F(x)','Position',[-2.8 1.02 1.0001],'Rotation',0,'FontSize', 16)
+grid on
+
+ÖRNEK Poisson Dağılım
+% Poisson Rastgele Dağılım için olasılık yoğunluk fonksiyonu
+function [y,z]=PRD(k,lamda)
+y = zeros(1,length(k));
+z = zeros(1,length(k));
+for i=1:length(k)
+ y(i) = (lamda^k(i)*exp(-lamda))/factorial(k(i));
+ z(i) = sum(y(1:i));
+end
+end
