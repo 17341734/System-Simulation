@@ -1,0 +1,27 @@
+Excel'de Rastgele Sayı Üretimi
+=S_SAYI_ÜRET()
+Excel’de a ve b Sayıları Arasında Rastgele Sayı Üretimi
+= (b-a)*S_SAYI_ÜRET() + a
+Üretilen rastgele sayının virgülden sonra 3 haneye yuvarlanması
+için
+= YUVARLA(((b-a)*S_SAYI_ÜRET()+a);3)
+VBA penceresine tıklanarak aşağıdaki programı yazmaya
+başlayabiliriz (veya kopyalayıp yapıştırabiliriz).
+Dim n As Double 'rastgele sayı adedi
+Dim m As Integer '3 rastgele sayı toplamının büyük olacağı sınır sayı
+Dim s As Double 'T>m olan deney sayısı
+Dim T As Integer 'rastgele üç sayının toplamı
+Dim p As Double 'p=s/n ihtimali
+Sub Rastgele3sayi()
+n = ThisWorkbook.Sheets("Sayfa1").Cells(2, 1).Value
+m = ThisWorkbook.Sheets("Sayfa1").Cells(2, 2).Value
+s = 0
+For k = 1 To n
+Randomize
+T = 100 * (Rnd + Rnd + Rnd)
+If T > m Then s = s + 1 Else: s = s
+Next
+ThisWorkbook.Sheets("Sayfa1").Cells(2, 3).Value = s
+p = s / n
+ThisWorkbook.Sheets("Sayfa1").Cells(2, 4).Value = p
+End Sub
